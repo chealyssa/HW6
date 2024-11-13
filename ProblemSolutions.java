@@ -1,7 +1,7 @@
 
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Che Alyssa Zulaik COMP272-002
  *
  *   This java file contains the problem solutions for the methods lastBoulder,
  *   showDuplicates, and pair methods. You should utilize the Java Collection
@@ -9,6 +9,7 @@
  *
  ********************************************************************/
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.PriorityQueue;
 
@@ -64,11 +65,18 @@ public class ProblemSolutions {
      */
 
   public static int lastBoulder(int[] boulders) {
-
-      //
-      // ADD YOUR CODE HERE - DO NOT FORGET TO ADD YOUR NAME / SECTION # ABOVE
-      //
-      return -1;
+      PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+      for (int boulder : boulders){
+          pq.offer(boulder);
+      }
+      while (pq.size() > 1){
+          int first = pq.poll();
+          int second = pq.poll();
+          if (first != second){
+              pq.offer(first - second);
+          }
+      }
+      return pq.isEmpty() ? 0 : pq.poll();
   }
 
 
@@ -90,11 +98,20 @@ public class ProblemSolutions {
      */
 
     public static ArrayList<String> showDuplicates(ArrayList<String> input) {
+        HashMap<String, Integer> frequencyMap = new HashMap<>();
 
-        //
-        //  YOUR CODE GOES HERE
-        //
-        return new ArrayList<>();  // Make sure result is sorted in ascending order
+        for (String str : input){
+            frequencyMap.put(str, frequencyMap.getOrDefault(str, 0) + 1);
+        }
+
+        ArrayList<String> duplicates = new ArrayList<>();
+        for(String str : frequencyMap.keySet()){
+            if (frequencyMap.get(str) > 1){
+                duplicates.add(str);
+            }
+        }
+        Collections.sort(duplicates);
+        return duplicates;  // Make sure result is sorted in ascending order
 
     }
 
@@ -130,10 +147,19 @@ public class ProblemSolutions {
      */
 
     public static ArrayList<String> pair(int[] input, int k) {
+        Set<Integer> set = new HashSet<>();
+        Set<String> pairs = new HashSet<>();
 
-        //
-        //  YOUR CODE GOES HERE
-        //
-        return new ArrayList<>();  // Make sure returned lists is sorted as indicated above
+        for(int num : input){
+            int complement = k - num;
+            if(set.contains(complement)){
+                String pair = "(" + Math.min(num, complement) + ", " + Math.max(num, complement) + ")";
+                pairs.add(pair);
+            }
+            set.add(num);
+        }
+        ArrayList<String> result = new ArrayList<>(pairs);
+        Collections.sort(result);
+        return result;  // Make sure returned lists is sorted as indicated above
     }
 }
